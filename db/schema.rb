@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_01_10_160208) do
+ActiveRecord::Schema[7.1].define(version: 2024_01_13_043022) do
   create_table "categories", charset: "utf8mb3", force: :cascade do |t|
     t.string "name"
     t.string "description"
@@ -29,7 +29,9 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_10_160208) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "category_id"
+    t.bigint "user_id"
     t.index ["category_id"], name: "index_task_items_on_category_id"
+    t.index ["user_id"], name: "index_task_items_on_user_id"
   end
 
   create_table "users", charset: "utf8mb3", force: :cascade do |t|
@@ -43,9 +45,12 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_10_160208) do
     t.string "username"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "authentication_token"
+    t.index ["authentication_token"], name: "index_users_on_authentication_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
   add_foreign_key "task_items", "categories"
+  add_foreign_key "task_items", "users"
 end
